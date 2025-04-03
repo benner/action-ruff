@@ -6,6 +6,8 @@ on:
     tags: [v*.*.*]
   pull_request:
     types: [labeled]
+permissions:
+  contents: read
 jobs:
   release:
     if: github.event.action != 'labeled'

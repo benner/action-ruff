@@ -6,6 +6,8 @@ on:
   repository_dispatch:
     types: [depup]
   workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   reviewdog:
     runs-on: ubuntu-latest
