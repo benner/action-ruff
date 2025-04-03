@@ -1,6 +1,6 @@
 ---
 name: depup
-on:
+on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: 14 14 * * *  # Runs at 14:14 UTC every day
   repository_dispatch:
