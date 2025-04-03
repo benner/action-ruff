@@ -8,9 +8,10 @@ fi
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
-misspell -locale="${INPUT_LOCALE}" . |
+# shellcheck disable=2086
+ruff check --output-format=concise . |
 	reviewdog -efm="%f:%l:%c: %m" \
-		-name="linter-name (misspell)" \
+		-name="linter-name (ruff)" \
 		-reporter="${INPUT_REPORTER:-github-pr-check}" \
 		-filter-mode="${INPUT_FILTER_MODE}" \
 		-fail-level="${INPUT_FAIL_LEVEL}" \
