@@ -1,6 +1,8 @@
-name: 'TODO: Run <linter-name> with reviewdog'
-description: 'TODO: 🐶 Run <linter-name> with reviewdog on pull requests to improve code review experience.'
-author: 'TODO: <your-name>'
+---
+name: 'Run ruff with reviewdog'
+description: |
+  🐶 Run ruff with reviewdog on pull requests to improve code review experience.
+author: Nerijus Bendžiūnas
 inputs:
   github_token:
     description: 'GITHUB_TOKEN'
@@ -28,10 +30,6 @@ inputs:
     default: 'none'
   reviewdog_flags:
     description: 'Additional reviewdog flags'
-    default: ''
-  ### Flags for <linter-name> ###
-  locale:
-    description: '-locale flag of misspell. (US/UK)'
     default: ''
 runs:
   using: 'docker'
