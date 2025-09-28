@@ -9,9 +9,9 @@ fi
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 # shellcheck disable=2086
-ruff check --output-format=concise . |
+/root/.local/bin/ruff check --output-format=concise . |
 	reviewdog -efm="%f:%l:%c: %m" \
-		-name="linter-name (ruff)" \
+		-name="ruff" \
 		-reporter="${INPUT_REPORTER:-github-pr-check}" \
 		-filter-mode="${INPUT_FILTER_MODE}" \
 		-fail-level="${INPUT_FAIL_LEVEL}" \
