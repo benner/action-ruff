@@ -33,6 +33,9 @@ inputs:
       Possible values: [none,any,info,warning,error]
       Default is `none`.
     default: none
+  ruff_args:
+    description: Additional arguments to pass to ruff
+    default: ''
   reviewdog_flags:
     description: Additional reviewdog flags
     default: ''
