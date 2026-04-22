@@ -56,4 +56,4 @@ keeps `v1` / `v1.2` aliases in sync.
 ### Dependencies
 
 [reviewdog/action-depup](https://github.com/reviewdog/action-depup) runs
-daily to update the reviewdog version in the Dockerfile and open a PR.
+daily to update the reviewdog and ruff versions in the Dockerfile and open a PR.
