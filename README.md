@@ -21,7 +21,7 @@ jobs:
     name: runner / ruff
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - uses: benner/action-ruff@v1
         with:
           github_token: ${{ secrets.github_token }}
