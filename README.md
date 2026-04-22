@@ -40,6 +40,7 @@ jobs:
 | `filter_mode` | Filter mode: `added`, `diff_context`, `file`, `nofilter` | `added` |
 | `fail_level` | Fail if issues at or above level: `none`, `any`, `info`, `warning`, `error` | `none` |
 | `reviewdog_flags` | Additional reviewdog flags | `''` |
+| `ruff_args` | Additional arguments passed to `ruff check` | `''` |
 
 ## Development
 
