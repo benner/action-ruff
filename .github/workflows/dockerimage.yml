@@ -14,5 +14,4 @@ jobs:
         with:
           persist-credentials: false
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ github.repository }}:$(date
-          +%s)
+        run: docker build . --file Dockerfile --tag "${{ github.repository }}:$(date +%s)"
