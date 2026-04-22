@@ -21,7 +21,7 @@ jobs:
     name: runner / ruff
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - uses: benner/action-ruff@v1
         with:
           github_token: ${{ secrets.github_token }}
@@ -40,6 +40,7 @@ jobs:
 | `filter_mode` | Filter mode: `added`, `diff_context`, `file`, `nofilter` | `added` |
 | `fail_level` | Fail if issues at or above level: `none`, `any`, `info`, `warning`, `error` | `none` |
 | `reviewdog_flags` | Additional reviewdog flags | `''` |
+| `ruff_args` | Additional arguments passed to `ruff check` | `''` |
 
 ## Development
 
@@ -55,4 +56,4 @@ keeps `v1` / `v1.2` aliases in sync.
 ### Dependencies
 
 [reviewdog/action-depup](https://github.com/reviewdog/action-depup) runs
-daily to update the reviewdog version in the Dockerfile and open a PR.
+daily to update the reviewdog and ruff versions in the Dockerfile and open a PR.
