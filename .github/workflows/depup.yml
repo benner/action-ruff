@@ -6,11 +6,13 @@ on:  # yamllint disable-line rule:truthy
   repository_dispatch:
     types: [depup]
   workflow_dispatch:
-permissions:
-  contents: read
+permissions: {}
 jobs:
   reviewdog:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
@@ -23,6 +25,9 @@ jobs:
           labels: bump:minor
   ruff:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
