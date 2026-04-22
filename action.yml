@@ -42,8 +42,6 @@ inputs:
 runs:
   using: docker
   image: Dockerfile
-# Ref: https://haya14busa.github.io/github-action-brandings/
-# TODO: update branding if you want.
 branding:
-  icon: check
-  color: blue
+  icon: zap
+  color: red
