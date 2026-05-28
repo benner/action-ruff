@@ -1,7 +1,7 @@
 FROM alpine:3.22
 
 ENV REVIEWDOG_VERSION=v0.21.0
-ENV RUFF_VERSION=v0.15.14
+ENV RUFF_VERSION=v0.15.15
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
