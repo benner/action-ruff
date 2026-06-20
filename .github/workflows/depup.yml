@@ -14,9 +14,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # yamllint disable-line rule:line-length
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           persist-credentials: false
+      # yamllint disable-line rule:line-length
       - uses: reviewdog/action-depup/with-pr@94a1aaf4e4923064019214b48a43276218af7ad5  # v1.6.4
         with:
           file: Dockerfile
@@ -29,9 +31,11 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # yamllint disable-line rule:line-length
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           persist-credentials: false
+      # yamllint disable-line rule:line-length
       - uses: reviewdog/action-depup/with-pr@94a1aaf4e4923064019214b48a43276218af7ad5  # v1.6.4
         with:
           file: Dockerfile
