@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
-      - uses: benner/action-ruff@v1
+      - uses: benner/action-ruff@v0.2.0
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
