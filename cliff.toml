@@ -1,0 +1,31 @@
+[changelog]
+header = ""
+body = """{% for group, commits in commits | group_by(attribute="group") %}### {{ group | upper_first }}
+{% for message, dupes in commits | group_by(attribute="message") %}- {{ message | upper_first }}
+{% endfor %}
+{% endfor %}"""
+trim = true
+footer = ""
+
+[git]
+conventional_commits = true
+filter_unconventional = true
+split_commits = false
+commit_preprocessors = [
+  { pattern = '(update [^\s]+) to [0-9][^\s]*', replace = "$1" },
+]
+commit_parsers = [
+  { message = "^feat", group = "Features" },
+  { message = "^fix", group = "Bug Fixes" },
+  { message = "^perf", group = "Performance" },
+  { message = "^docs", group = "Documentation" },
+  { message = "^chore\\(deps\\)", group = "Dependencies" },
+  { message = "^ci", group = "CI" },
+  { message = "^refactor", group = "Refactor" },
+  { message = "^test", group = "Testing" },
+  { message = "^chore", group = "Miscellaneous" },
+  { message = ".*", group = "Other" },
+]
+filter_commits = false
+tag_pattern = "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+sort_commits = "oldest"
