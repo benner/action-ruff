@@ -21,24 +21,7 @@ jobs:
       # yamllint disable-line rule:line-length
       - uses: reviewdog/action-depup/with-pr@94a1aaf4e4923064019214b48a43276218af7ad5  # v1.6.4
         with:
-          file: Dockerfile
-          version_name: REVIEWDOG_VERSION
+          file: action.yml
+          version_name: reviewdog_version
           repo: reviewdog/reviewdog
-          labels: dependencies
-  ruff:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      # yamllint disable-line rule:line-length
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
-        with:
-          persist-credentials: false
-      # yamllint disable-line rule:line-length
-      - uses: reviewdog/action-depup/with-pr@94a1aaf4e4923064019214b48a43276218af7ad5  # v1.6.4
-        with:
-          file: Dockerfile
-          version_name: RUFF_VERSION
-          repo: astral-sh/ruff
           labels: dependencies

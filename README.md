@@ -20,14 +20,29 @@ jobs:
   ruff:
     name: runner / ruff
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
-      - uses: benner/action-ruff@v0.2.0
+      - uses: benner/action-ruff@v0.3.0
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           level: warning
 ```
+
+The `github-pr-check` and `github-check` reporters need `checks: write`
+instead of `pull-requests: write`.
+
+The action is a composite action: it installs reviewdog with
+[reviewdog/action-setup](https://github.com/reviewdog/action-setup) and ruff
+with [astral-sh/ruff-action](https://github.com/astral-sh/ruff-action), so it
+runs on any GitHub-hosted runner without building a container image.
+
+ruff-action exports `RUFF_OUTPUT_FORMAT=github` into the job environment.
+Later `ruff` steps in the same job print GitHub workflow commands unless
+they pass their own `--output-format`.
 
 ## Inputs
 
@@ -35,6 +50,7 @@ jobs:
 | ---- | ----------- | ------- |
 | `github_token` | GitHub token | `${{ github.token }}` |
 | `workdir` | Working directory relative to the root | `.` |
+| `ruff_version` | ruff version to install; empty uses the version pinned in the project's `pyproject.toml`, `requirements.txt` or `uv.lock`, else latest | `''` |
 | `level` | Report level: `info`, `warning`, `error` | `error` |
 | `reporter` | reviewdog reporter: `github-pr-check`, `github-check`, `github-pr-review` | `github-pr-check` |
 | `filter_mode` | Filter mode: `added`, `diff_context`, `file`, `nofilter` | `added` |
@@ -56,4 +72,5 @@ keeps `v1` / `v1.2` aliases in sync.
 ### Dependencies
 
 [reviewdog/action-depup](https://github.com/reviewdog/action-depup) runs
-daily to update the reviewdog and ruff versions in the Dockerfile and open a PR.
+daily to update the reviewdog version in `action.yml` and open a PR. The
+ruff version follows the project being linted, so it needs no bump here.
