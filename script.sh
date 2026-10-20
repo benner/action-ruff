@@ -1,18 +1,17 @@
-#!/bin/sh
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
-if [ -n "${GITHUB_WORKSPACE}" ]; then
-    cd "${GITHUB_WORKSPACE}/${INPUT_WORKDIR}" || exit
-    git config --global --add safe.directory "${GITHUB_WORKSPACE}" || exit 1
-fi
+cd "${GITHUB_WORKSPACE}/${INPUT_WORKDIR}"
 
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
+
+ruff --version
 
 RUFF_OUTPUT="$(mktemp)"
 
 set +e
-# shellcheck disable=2086
-/root/.local/bin/ruff check --output-format=concise ${INPUT_RUFF_ARGS} . >"${RUFF_OUTPUT}"
+# shellcheck disable=SC2086
+ruff check --output-format=concise ${INPUT_RUFF_ARGS} . >"${RUFF_OUTPUT}"
 RUFF_EXIT_CODE=$?
 set -e
 
@@ -20,10 +19,10 @@ if [ "${RUFF_EXIT_CODE}" -gt 1 ]; then
     exit "${RUFF_EXIT_CODE}"
 fi
 
-# shellcheck disable=2086
+# shellcheck disable=SC2086
 reviewdog -efm="%f:%l:%c: %m" \
     -name="ruff" \
-    -reporter="${INPUT_REPORTER:-github-pr-check}" \
+    -reporter="${INPUT_REPORTER}" \
     -filter-mode="${INPUT_FILTER_MODE}" \
     -fail-level="${INPUT_FAIL_LEVEL}" \
     -level="${INPUT_LEVEL}" \

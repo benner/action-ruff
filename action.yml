@@ -10,6 +10,12 @@ inputs:
   workdir:
     description: Working directory relative to the root directory.
     default: .
+  ruff_version:
+    description: |
+      ruff version to install. Leave empty to use the version pinned in the
+      project's pyproject.toml, requirements.txt or uv.lock, or latest when
+      none is pinned.
+    default: ''
   ### Flags for reviewdog  ###
   level:
     description: Report level for reviewdog [info,warning,error]
@@ -40,8 +46,29 @@ inputs:
     description: Additional reviewdog flags
     default: ''
 runs:
-  using: docker
-  image: Dockerfile
+  using: composite
+  steps:
+    # yamllint disable-line rule:line-length
+    - uses: reviewdog/action-setup@d8a7baabd7f3e8544ee4dbde3ee41d0011c3a93f  # v1.5.0
+      with:
+        reviewdog_version: v0.21.1
+    # yamllint disable-line rule:line-length
+    - uses: astral-sh/ruff-action@278981a28ce3188b1e39527901f38254bf3aac89  # v4.1.0
+      with:
+        args: --version
+        src: ${{ inputs.workdir }}
+        version: ${{ inputs.ruff_version }}
+    - run: $GITHUB_ACTION_PATH/script.sh
+      shell: bash
+      env:
+        INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
+        INPUT_WORKDIR: ${{ inputs.workdir }}
+        INPUT_LEVEL: ${{ inputs.level }}
+        INPUT_REPORTER: ${{ inputs.reporter }}
+        INPUT_FILTER_MODE: ${{ inputs.filter_mode }}
+        INPUT_FAIL_LEVEL: ${{ inputs.fail_level }}
+        INPUT_RUFF_ARGS: ${{ inputs.ruff_args }}
+        INPUT_REVIEWDOG_FLAGS: ${{ inputs.reviewdog_flags }}
 branding:
   icon: zap
   color: red
