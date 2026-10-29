@@ -10,12 +10,15 @@ jobs:
   test-check:
     name: runner / ruff (github-check)
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
     steps:
       # yamllint disable-line rule:line-length
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
-      - uses: ./
+      - uses: ./  # zizmor: ignore[self-repository]
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-check
@@ -24,12 +27,15 @@ jobs:
     if: github.event_name == 'pull_request'
     name: runner / ruff (github-pr-check)
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read
     steps:
       # yamllint disable-line rule:line-length
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
-      - uses: ./
+      - uses: ./  # zizmor: ignore[self-repository]
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-check
@@ -39,14 +45,59 @@ jobs:
     if: github.event_name == 'pull_request'
     name: runner / ruff (github-pr-review)
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       # yamllint disable-line rule:line-length
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
-      - uses: ./
+      - uses: ./  # zizmor: ignore[self-repository]
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           level: error
-          reviewdog_flags: -filter-mode=file -fail-on-error
+          filter_mode: file
+          fail_level: error
+  test-local:
+    name: runner / ruff (local, findings fail)
+    runs-on: ubuntu-latest
+    steps:
+      # yamllint disable-line rule:line-length
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
+      - id: run
+        uses: ./  # zizmor: ignore[self-repository]
+        continue-on-error: true
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: local
+          filter_mode: nofilter
+          fail_level: any
+      - name: Assert reviewdog reported the testdata findings
+        if: steps.run.outcome != 'failure'
+        run: |
+          echo '::error::expected the action to fail on testdata findings'
+          exit 1
+  test-exit-code:
+    name: runner / ruff (ruff error propagates)
+    runs-on: ubuntu-latest
+    steps:
+      # yamllint disable-line rule:line-length
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
+      - id: run
+        uses: ./  # zizmor: ignore[self-repository]
+        continue-on-error: true
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: local
+          ruff_args: --select BOGUS
+      - name: Assert a ruff error fails the action
+        if: steps.run.outcome != 'failure'
+        run: |-
+          echo '::error::expected a ruff error to fail the action'
+          exit 1
